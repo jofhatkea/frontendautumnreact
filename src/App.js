@@ -41,11 +41,55 @@ function Post(props) {
     </article>
   );
 }
-function AddPostForm() {
+function AddPostForm(props) {
+  const [author, setAuthor] = useState("");
+  const [message, setMessage] = useState("");
+  /*function onAuthorChange(e){
+
+  }*/
+  const onAuthorChange = e => {
+    setAuthor(e.target.value);
+  };
+  const onMessageChange = e => {
+    setMessage(e.target.value);
+  };
+  const onSubmit = e => {
+    e.preventDefault();
+
+    const baseURL = "https://frontendautmn2019-5ad1.restdb.io/rest/";
+    const headers = {
+      "Content-Type": "application/json; charset=utf-8",
+      "x-apikey": "5d887443fd86cb75861e25ee",
+      "cache-control": "no-cache"
+    };
+    fetch(baseURL + "posts", {
+      method: "post",
+      headers: headers,
+      body: JSON.stringify({
+        author: author,
+        message: message,
+        likes: 0
+      })
+    })
+      .then(e => e.json())
+      .then(data => {
+        props.onPostAdded(data);
+        //console.log(e);
+      });
+  };
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       <h2>AddPostForm</h2>
-      <textarea></textarea>
+      <label>
+        <input
+          type="text"
+          name="author"
+          value={author}
+          onChange={onAuthorChange}
+        />
+      </label>
+      <textarea value={message} onChange={onMessageChange}></textarea>
+      <input type="submit" value="Say what you think" />
     </form>
   );
 }
@@ -68,7 +112,7 @@ function Feed(props) {
   return (
     <section>
       FEED
-      <AddPostForm />
+      <AddPostForm onPostAdded={props.onPostAdded} />
       {props.posts.map(item => {
         return (
           <Post
@@ -103,18 +147,23 @@ function App() {
       .then(e => setPosts(e));
   }, []);
 
-  function addPost() {
+  /*function addPost() {
     const copy = posts.concat({
       message: "very strange",
       author: "everybody"
     });
     setPosts(copy);
+  }*/
+  function addNewPost(data) {
+    console.log(data);
+    data.comments = [];
+    const copy = posts.concat(data);
+    setPosts(copy);
   }
   return (
     <div className="App">
-      {loggedIn && <button onClick={addPost}>Add post</button>}
       <Header name={name} />
-      <Feed posts={posts} />
+      <Feed onPostAdded={addNewPost} posts={posts} />
       <Footer name={name} />
     </div>
   );
