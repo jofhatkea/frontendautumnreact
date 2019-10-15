@@ -4,4 +4,6 @@
 
 .post {
   border: 1px solid hotpink;
+  box-shadow: 8px 5px 1px #000;
+  margin: 2em;
 }

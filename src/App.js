@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 function Header(props) {
@@ -25,28 +25,42 @@ function Post(props) {
     <article className="post">
       <h2>{props.author}</h2>
       <p>{props.message}</p>
-      <button onClick={updateLikes}>Like {likes}</button>
+      <button>{props.likes} likes</button>
       <AddCommentForm />
-      <Comment />
-      <Comment />
-      <Comment />
+      <ol>
+        {props.comments.map(comment => {
+          return (
+            <Comment
+              key={comment._id}
+              author={comment.author}
+              comment={comment.comment}
+            />
+          );
+        })}
+      </ol>
     </article>
   );
 }
 function AddPostForm() {
   return (
     <form>
-      <textarea>AddPostForm</textarea>
+      <h2>AddPostForm</h2>
+      <textarea></textarea>
     </form>
   );
 }
-function Comment() {
-  return <div>COMMENT</div>;
+function Comment(props) {
+  return (
+    <li>
+      {props.author} said {props.comment}
+    </li>
+  );
 }
 function AddCommentForm() {
   return (
     <form>
-      <textarea>AddCommentForm</textarea>
+      <h2>AddCommentForm</h2>
+      <textarea></textarea>
     </form>
   );
 }
@@ -56,19 +70,38 @@ function Feed(props) {
       FEED
       <AddPostForm />
       {props.posts.map(item => {
-        return <Post message={item.message} author={item.author} />;
+        return (
+          <Post
+            key={item._id}
+            comments={item.comments}
+            likes={item.likes}
+            message={item.message}
+            author={item.author}
+          />
+        );
       })}
     </section>
   );
 }
 function App() {
   const name = "Jonas"; // pass this to <Profile /> and <Footer />
-  const [posts, setPosts] = useState([
-    {
-      message: "very cool",
-      author: "Jonas"
-    }
-  ]);
+
+  const [posts, setPosts] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    const baseURL = "https://frontendautmn2019-5ad1.restdb.io/rest/";
+    const headers = {
+      "Content-Type": "application/json; charset=utf-8",
+      "x-apikey": "5d887443fd86cb75861e25ee",
+      "cache-control": "no-cache"
+    };
+    fetch(baseURL + "posts?fetchchildren=true", {
+      method: "get",
+      headers: headers
+    })
+      .then(e => e.json())
+      .then(e => setPosts(e));
+  }, []);
 
   function addPost() {
     const copy = posts.concat({
@@ -79,7 +112,7 @@ function App() {
   }
   return (
     <div className="App">
-      <button onClick={addPost}>Add post</button>
+      {loggedIn && <button onClick={addPost}>Add post</button>}
       <Header name={name} />
       <Feed posts={posts} />
       <Footer name={name} />
