@@ -5,8 +5,6 @@ import Footer from "./components/Footer";
 import "./App.css";
 
 export default function App() {
-  const name = "Jonas"; // pass this to <Profile /> and <Footer />
-
   const [posts, setPosts] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
@@ -37,11 +35,25 @@ export default function App() {
     const copy = posts.concat(data);
     setPosts(copy);
   }
+  const onLogin = e => {
+    setLoggedIn(e.profileObj);
+  };
+  const onLogOut = e => {
+    setLoggedIn(false);
+  };
+  const onFailure = e => {
+    console.warn("Login failure", e);
+  };
   return (
     <div className="App">
-      <Header name={name} />
-      <Feed onPostAdded={addNewPost} posts={posts} />
-      <Footer name={name} />
+      <Header
+        onLogin={onLogin}
+        onLogOut={onLogOut}
+        onFailure={onFailure}
+        loggedIn={loggedIn}
+      />
+      <Feed onPostAdded={addNewPost} posts={posts} loggedIn={loggedIn} />
+      <Footer loggedIn={loggedIn} />
     </div>
   );
 }

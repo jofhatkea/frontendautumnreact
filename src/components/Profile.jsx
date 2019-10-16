@@ -1,4 +1,17 @@
 import React from "react";
 export default function Profile(props) {
-  return <h2>Hello {props.name}</h2>;
+  console.log(props.loggedIn);
+  if (props.loggedIn) {
+    return (
+      <section>
+        <h2>Hello {props.loggedIn.givenName}, good to see you</h2>
+        <img
+          style={{ borderRadius: "50%" }}
+          src={props.loggedIn.imageUrl}
+          alt={props.loggedIn.name}
+        />
+      </section>
+    );
+  }
+  return "";
 }

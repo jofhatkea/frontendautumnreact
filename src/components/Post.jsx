@@ -4,15 +4,13 @@ import Comment from "./Comment";
 
 export default function Post(props) {
   let [likes, setLikes] = useState(0);
-  function updateLikes() {
-    setLikes(likes + 1);
-  }
+
   return (
     <article className="post">
       <h2>{props.author}</h2>
       <p>{props.message}</p>
       <button>{props.likes} likes</button>
-      <AddCommentForm />
+      {props.loggedIn && <AddCommentForm />}
       <ol>
         {props.comments.map(comment => {
           return (

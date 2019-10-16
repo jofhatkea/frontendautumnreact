@@ -1,19 +1,17 @@
 import React, { useState } from "react";
+import PacmanLoader from "react-spinners/PacmanLoader";
 export default function AddPostForm(props) {
-  const [author, setAuthor] = useState("");
   const [message, setMessage] = useState("");
+  const [disabled, setDisabled] = useState(false);
   /*function onAuthorChange(e){
   
     }*/
-  const onAuthorChange = e => {
-    setAuthor(e.target.value);
-  };
   const onMessageChange = e => {
     setMessage(e.target.value);
   };
   const onSubmit = e => {
     e.preventDefault();
-
+    setDisabled(true);
     const baseURL = "https://frontendautmn2019-5ad1.restdb.io/rest/";
     const headers = {
       "Content-Type": "application/json; charset=utf-8",
@@ -24,7 +22,7 @@ export default function AddPostForm(props) {
       method: "post",
       headers: headers,
       body: JSON.stringify({
-        author: author,
+        author: props.loggedIn.name,
         message: message,
         likes: 0
       })
@@ -32,22 +30,31 @@ export default function AddPostForm(props) {
       .then(e => e.json())
       .then(data => {
         props.onPostAdded(data);
+        setMessage("");
+        setDisabled(false);
         //console.log(e);
       });
   };
   return (
-    <form onSubmit={onSubmit}>
+    <form
+      onSubmit={onSubmit}
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr"
+      }}
+    >
       <h2>AddPostForm</h2>
-      <label>
-        <input
-          type="text"
-          name="author"
-          value={author}
-          onChange={onAuthorChange}
-        />
-      </label>
+
       <textarea value={message} onChange={onMessageChange}></textarea>
-      <input type="submit" value="Say what you think" />
+      <PacmanLoader
+        sizeUnit={"px"}
+        size={30}
+        color={"hotpink"}
+        loading={disabled}
+      />
+      {!disabled && (
+        <input type="submit" disabled={disabled} value="Say what you think" />
+      )}
     </form>
   );
 }
