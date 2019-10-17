@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/frontendautumnreact/static/css/main.16be0329.chunk.css",
+    "main.js": "/frontendautumnreact/static/js/main.61d522f0.chunk.js",
+    "main.js.map": "/frontendautumnreact/static/js/main.61d522f0.chunk.js.map",
+    "runtime-main.js": "/frontendautumnreact/static/js/runtime-main.2cc009e3.js",
+    "runtime-main.js.map": "/frontendautumnreact/static/js/runtime-main.2cc009e3.js.map",
+    "static/js/2.d7b84754.chunk.js": "/frontendautumnreact/static/js/2.d7b84754.chunk.js",
+    "static/js/2.d7b84754.chunk.js.map": "/frontendautumnreact/static/js/2.d7b84754.chunk.js.map",
+    "index.html": "/frontendautumnreact/index.html",
+    "precache-manifest.6c902a1977c71c369ae32201edaaead8.js": "/frontendautumnreact/precache-manifest.6c902a1977c71c369ae32201edaaead8.js",
+    "service-worker.js": "/frontendautumnreact/service-worker.js",
+    "static/css/main.16be0329.chunk.css.map": "/frontendautumnreact/static/css/main.16be0329.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2cc009e3.js",
+    "static/js/2.d7b84754.chunk.js",
+    "static/css/main.16be0329.chunk.css",
+    "static/js/main.61d522f0.chunk.js"
+  ]
+}
